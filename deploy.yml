@@ -13,12 +13,6 @@ variables:
   # Azure Service Principal credentials (stored as secrets in Azure DevOps)
   - name: 'ARM_SUBSCRIPTION_ID'
     value: $(subscription_id)   # Service connection or subscription ID
-  - name: 'ARM_CLIENT_ID'
-    value: $(client_id)         # Service principal client ID
-  - name: 'ARM_CLIENT_SECRET'
-    value: $(client_secret)     # Service principal client secret
-  - name: 'ARM_TENANT_ID'
-    value: $(tenant_id)         # Azure Active Directory tenant ID
 
 steps:
   # Step 1: Install Terraform
