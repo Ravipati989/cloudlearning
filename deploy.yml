@@ -1,0 +1,65 @@
+trigger:
+  - main  # Adjust based on your branch; this triggers the pipeline when changes are made to the "main" branch.
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  - name: 'TF_VERSION'   # Define the Terraform version you want to install.
+    value: '1.5.0'
+  - name: 'TF_WORKING_DIR'  # Define the working directory for Terraform.
+    value: './terraform'  # Assuming your Terraform code is in the 'terraform' folder.
+
+  # Azure Service Principal credentials (stored as secrets in Azure DevOps)
+  - name: 'ARM_SUBSCRIPTION_ID'
+    value: $(subscription_id)   # Service connection or subscription ID
+  - name: 'ARM_CLIENT_ID'
+    value: $(client_id)         # Service principal client ID
+  - name: 'ARM_CLIENT_SECRET'
+    value: $(client_secret)     # Service principal client secret
+  - name: 'ARM_TENANT_ID'
+    value: $(tenant_id)         # Azure Active Directory tenant ID
+
+steps:
+  # Step 1: Install Terraform
+  - task: TerraformInstaller@0
+    inputs:
+      terraformVersion: $(TF_VERSION)
+
+  # Step 2: Install Azure CLI (Optional but useful if you're also doing some CLI-related actions)
+  - task: UseDotNet@2
+    inputs:
+      packageType: 'sdk'
+      version: '3.x'
+
+  # Step 3: Terraform Initialization
+  - task: Bash@3
+    inputs:
+      targetType: 'inline'
+      script: |
+        echo "##[section]Terraform Init"
+        terraform init -input=false -backend-config="storage_account_name=$(tf_storage_account)" \
+        -backend-config="container_name=$(tf_container_name)" \
+        -backend-config="key=$(tf_state_key)" \
+        -backend-config="access_key=$(tf_access_key)"
+
+    workingDirectory: $(TF_WORKING_DIR)
+
+  # Step 4: Terraform Plan
+  - task: Bash@3
+    inputs:
+      targetType: 'inline'
+      script: |
+        echo "##[section]Terraform Plan"
+        terraform plan -out=tfplan -input=false
+    workingDirectory: $(TF_WORKING_DIR)
+
+  # Step 5: Terraform Apply (only on approval in production environments)
+  - task: Bash@3
+    inputs:
+      targetType: 'inline'
+      script: |
+        echo "##[section]Terraform Apply"
+        terraform apply -input=false tfplan
+    workingDirectory: $(TF_WORKING_DIR)
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')  # Optional condition to apply only on 'main' branch
