@@ -10,6 +10,9 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
+- task: TerraformInstaller@1
+  inputs:
+    terraformVersion: 'latest'
 - task: TerraformTaskV4@4
   inputs:
     provider: 'azurerm'
@@ -19,3 +22,17 @@ steps:
     backendAzureRmStorageAccountName: 'cloudlearning1'
     backendAzureRmContainerName: 'cloudlearningcontainer1'
     backendAzureRmKey: 'terraform.tfstate'
+- task: TerraformTaskV4@4
+  inputs:
+    provider: 'azurerm'
+    command: 'validate'
+- task: TerraformTaskV4@4
+  inputs:
+    provider: 'azurerm'
+    command: 'plan'
+    environmentServiceNameAzureRM: 'TerraformServicePricipal'
+- task: TerraformTaskV4@4
+  inputs:
+    provider: 'azurerm'
+    command: 'apply'
+    environmentServiceNameAzureRM: 'TerraformServicePricipal'
