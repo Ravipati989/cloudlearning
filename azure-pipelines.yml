@@ -14,7 +14,7 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'init'
-    backendServiceArm: 'Azure subscription 1(76589609-f356-45d6-9343-cacd37492e24)'
+    backendServiceArm: 'TerraformServicePricipal'
     backendAzureRmResourceGroupName: 'Cloudlearning'
     backendAzureRmStorageAccountName: 'cloudlearning1'
     backendAzureRmContainerName: 'cloudlearningcontainer1'
