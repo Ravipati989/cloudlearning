@@ -9,7 +9,23 @@ trigger:
 pool:
  name: Default
 
-steps:
-- task: TerraformInstaller@1
-  inputs:
-    terraformVersion: 'latest'
+variables:
+  # Specify the Terraform version to use
+  TF_VERSION: '1.5.0'
+  TF_WORKING_DIR: './terraform'  # Path where the Terraform files are located
+  # Azure environment variables (using Azure DevOps secrets for secure handling)
+  ARM_SUBSCRIPTION_ID: "76589609-f356-45d6-9343-cacd37492e24"
+  ARM_TENANT_ID: "8cb5854b-a2fc-4e63-86e8-692a9c16832a"
+
+stages:
+  - stage: 'TerraformDeployment'
+    displayName: 'Deploy Infrastructure using Terraform'
+    jobs:
+      - job: 'Terraform'
+        displayName: 'Terraform Init, Plan and Apply'
+        steps:
+
+          # Step 1: Install Terraform
+          - task: TerraformInstaller@0
+            inputs:
+              terraformVersion: $(TF_VERSION)
