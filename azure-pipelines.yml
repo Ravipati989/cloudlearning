@@ -29,9 +29,5 @@ stages:
           - task: TerraformInstaller@0
             inputs:
               terraformVersion: $(TF_VERSION)
-          - task: TerraformTaskV4@4
-            inputs:
-              provider: 'azurerm'
-              command: 'plan'
-              environmentServiceNameAzureRM: 'Azure subscription 1(76589609-f356-45d6-9343-cacd37492e24)'
+          
           
