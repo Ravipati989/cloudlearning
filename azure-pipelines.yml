@@ -69,8 +69,8 @@ stages:
               command: 'init'
               backendServiceArm: 'Azure subscription 1(76589609-f356-45d6-9343-cacd37492e24)'
               backendAzureRmResourceGroupName: 'mrcloudrg'
-              backendAzureRmStorageAccountName: 'mrcloudstg'
-              backendAzureRmContainerName: 'mrcloudcontainer'
+              backendAzureRmStorageAccountName: 'mrcloudstgtst'
+              backendAzureRmContainerName: 'mrcloudcontainertst'
               backendAzureRmKey: 'terraform.tfstate'
           - task: TerraformTaskV3@3
             inputs:
