@@ -9,15 +9,6 @@ trigger:
 pool:
  name: Default
 
-parameters:
-  - name: stages
-    type: object
-    default:
-      - name : dev
-      - name : tst
-      - name : stg
-      - name : prod
-
 variables:
   # Specify the Terraform version to use
   TF_VERSION: '1.5.0'
@@ -27,11 +18,44 @@ variables:
   ARM_TENANT_ID: "8cb5854b-a2fc-4e63-86e8-692a9c16832a"
 
 stages:
-  - stage: 'TerraformDeployment'
-    displayName: 'Deploy Infrastructure using Terraform'
+  - stage: 'Dev_Env'
+    displayName: 'Deploy Infrastructure using Terraform into Dev Env'
     jobs:
       - job: 'Terraform'
-        displayName: 'Terraform Init, Plan and Apply'
+        displayName: 'Terraform Init, Plan and Apply to Dev'
+        steps:
+
+          # Step 1: Install Terraform
+          - task: TerraformInstaller@0
+            inputs:
+              terraformVersion: $(TF_VERSION)
+          
+          - task: TerraformTaskV3@3
+            inputs:
+              provider: 'azurerm'
+              command: 'init'
+              backendServiceArm: 'Azure subscription 1(76589609-f356-45d6-9343-cacd37492e24)'
+              backendAzureRmResourceGroupName: 'mrcloudrg'
+              backendAzureRmStorageAccountName: 'mrcloudstg'
+              backendAzureRmContainerName: 'mrcloudcontainer'
+              backendAzureRmKey: 'terraform.tfstate'
+          - task: TerraformTaskV3@3
+            inputs:
+              provider: 'azurerm'
+              command: 'plan'
+              environmentServiceNameAzureRM: 'Azure subscription 1(76589609-f356-45d6-9343-cacd37492e24)'
+          - task: TerraformTaskV3@3
+            inputs:
+              provider: 'azurerm'
+              command: 'apply'
+              environmentServiceNameAzureRM: 'Azure subscription 1(76589609-f356-45d6-9343-cacd37492e24)'
+  - stage: 'Tst_Env'
+    displayName: 'Deploy Infrastructure using Terraform into Tst Env'
+    dependsOn: Dev_Env
+    condition: succeeded()
+    jobs:
+      - job: 'Terraform'
+        displayName: 'Terraform Init, Plan and Apply to Tst'
         steps:
 
           # Step 1: Install Terraform
