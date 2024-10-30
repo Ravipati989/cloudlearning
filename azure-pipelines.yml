@@ -67,7 +67,7 @@ stages:
             inputs:
               provider: 'azurerm'
               command: 'init'
-              backendServiceArm: 'Azure subscription 1(76589609-f356-45d6-9343-cacd37492e24)'
+              backendServiceArm: 'Subscription 1(08e9cbbc-a29e-488d-8477-b22ab74e9325)'
               backendAzureRmResourceGroupName: 'mrcloudrg'
               backendAzureRmStorageAccountName: 'mrcloudstgtst'
               backendAzureRmContainerName: 'mrcloudcontainertst'
@@ -76,9 +76,9 @@ stages:
             inputs:
               provider: 'azurerm'
               command: 'plan'
-              environmentServiceNameAzureRM: 'Azure subscription 1(76589609-f356-45d6-9343-cacd37492e24)'
+              environmentServiceNameAzureRM: 'Subscription 1(08e9cbbc-a29e-488d-8477-b22ab74e9325)'
           - task: TerraformTaskV3@3
             inputs:
               provider: 'azurerm'
               command: 'apply'
-              environmentServiceNameAzureRM: 'Azure subscription 1(76589609-f356-45d6-9343-cacd37492e24)'
+              environmentServiceNameAzureRM: 'Subscription 1(08e9cbbc-a29e-488d-8477-b22ab74e9325)'
