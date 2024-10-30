@@ -39,3 +39,8 @@ stages:
               backendAzureRmStorageAccountName: 'mrcloudstg'
               backendAzureRmContainerName: 'mrcloudcontainer'
               backendAzureRmKey: 'terraform.tfstate'
+          - task: TerraformTaskV3@3
+            inputs:
+              provider: 'azurerm'
+              command: 'plan'
+              environmentServiceNameAzureRM: 'Azure subscription 1(76589609-f356-45d6-9343-cacd37492e24)'
