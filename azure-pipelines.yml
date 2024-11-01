@@ -6,8 +6,8 @@
 trigger:
 - none
 
-pool:
- name: Azure Pipelines
+pool: Azure Pipelines
+Image: ubuntu-latest
 
 variables:
   # Specify the Terraform version to use
