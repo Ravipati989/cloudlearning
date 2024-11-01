@@ -15,7 +15,7 @@ stages:
         steps:
           - task: TerraformInstaller@0
             inputs:
-              terraformVersion: '1.5.0'
+              terraformVersion: '1.5.0' 
           - task: TerraformTaskV3@3
             inputs:
               provider: 'azurerm'
@@ -25,4 +25,9 @@ stages:
               backendAzureRmStorageAccountName: 'mrcloudstg'
               backendAzureRmContainerName: 'mrcloudcontainer'
               backendAzureRmKey: 'terraform.tfstate'
+          - task: TerraformTaskV3@3
+            inputs:
+              provider: 'azurerm'
+              command: 'plan'
+              environmentServiceNameAzureRM: 'devserviceprncipal'
 
