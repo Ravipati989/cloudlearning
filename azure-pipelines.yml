@@ -50,37 +50,4 @@ stages:
               provider: 'azurerm'
               command: 'apply'
               environmentServiceNameAzureRM: 'devserviceprncipal'
-  - stage: 'Tst_Env'
-    displayName: 'Deploy Infrastructure using Terraform into Tst Env'
-    dependsOn: Dev_Env
-    condition: succeeded()
-    jobs:
-      - job: 'Terraform'
-        displayName: 'Terraform Init, Plan and Apply to Tst'
-        steps:
-
-          # Step 1: Install Terraform
-          - task: TerraformInstaller@0
-            inputs:
-              terraformVersion: $(TF_VERSION)
-          
-          - task: TerraformTaskV3@3
-            inputs:
-              provider: 'azurerm'
-              command: 'init'
-              backendServiceArm: 'Subscription 1(08e9cbbc-a29e-488d-8477-b22ab74e9325)'
-              backendAzureRmResourceGroupName: 'mrcloudrg'
-              backendAzureRmStorageAccountName: 'mrcloudstgtst'
-              backendAzureRmContainerName: 'mrcloudcontainertst'
-              backendAzureRmKey: 'terraform.tfstate'
-          - task: TerraformTaskV3@3
-            inputs:
-              provider: 'azurerm'
-              command: 'plan'
-              environmentServiceNameAzureRM: 'Subscription 1(08e9cbbc-a29e-488d-8477-b22ab74e9325)'
-          - task: TerraformTaskV3@3
-            inputs:
-              provider: 'azurerm'
-              command: 'apply'
-              environmentServiceNameAzureRM: 'Subscription 1(08e9cbbc-a29e-488d-8477-b22ab74e9325)'
-              
+  
