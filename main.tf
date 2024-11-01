@@ -1,7 +1,7 @@
 provider "azurerm" {
   features {}
 
-  
+  Subscription = "76589609-f356-45d6-9343-cacd37492e24"
 }
 
 # Define the resource group
