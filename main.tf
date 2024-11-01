@@ -15,4 +15,5 @@ provider "azurerm" {
 resource "azurerm_resource_group" "Cloudlearning" {
   name     = "Cloudlearning"
   location = "UKSouth"
+  provider = azurerm
 }
