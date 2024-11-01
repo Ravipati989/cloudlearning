@@ -13,7 +13,7 @@ stages:
     jobs:
       - job : deploy
         steps:
-          - task: TerraformInstaller@1
+          - task: TerraformInstaller@0
             inputs:
               terraformVersion: '1.5.0'
 
