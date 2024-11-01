@@ -7,7 +7,7 @@ trigger:
 - none
 
 pool: 
- name: ActiveAgent
+ name: Default
 
 variables:
   # Specify the Terraform version to use
