@@ -1,1 +1,76 @@
+trigger:
+  - none  # Set to manual trigger
+
+pool:
+  name: Default
+
+variables:
+  TF_VERSION: '1.5.0'
+  TF_WORKING_DIR: './terraform'
+
+parameters:
+  - name: environments
+    type: object
+    default:
+      - name: Dev
+        displayName: 'Deploy to Development'
+        subscriptionId: '76589609-f356-45d6-9343-cacd37492e24'
+        serviceConnection: 'devserviceprncipal'
+        backendStorageAccount: 'mrcloudstg'
+        backendContainer: 'mrcloudcontainer'
+        backendResourceGroup: 'mrcloudrg'
+        backendKey: 'terraform.tfstate'
+      - name: Tst
+        displayName: 'Deploy to Testing'
+        subscriptionId: '08e9cbbc-a29e-488d-8477-b22ab74e9325'
+        serviceConnection: 'testserviceprncipal'
+        backendStorageAccount: 'mrcloudstgtst'
+        backendContainer: 'mrcloudcontainertst'
+        backendResourceGroup: 'mrcloudrgtst'
+        backendKey: 'terraform-tst.tfstate'
+
+stages:
+  - ${{ each env in parameters.environments }}:
+      - stage: ${{ env.name }}
+        displayName: '${{ env.displayName }}'
+        jobs:
+          - job: Terraform_${{ env.name }}
+            displayName: 'Terraform Init, Plan, and Apply for ${{ env.name }}'
+            steps:
+              # Step 1: Install Terraform
+              - task: TerraformInstaller@0
+                inputs:
+                  terraformVersion: $(TF_VERSION)
+
+              # Step 2: Terraform Init
+              - task: TerraformTaskV3@3
+                displayName: 'Terraform Init'
+                inputs:
+                  provider: 'azurerm'
+                  command: 'init'
+                  backendServiceArm: '${{ env.serviceConnection }}'
+                  backendAzureRmResourceGroupName: '${{ env.backendResourceGroup }}'
+                  backendAzureRmStorageAccountName: '${{ env.backendStorageAccount }}'
+                  backendAzureRmContainerName: '${{ env.backendContainer }}'
+                  backendAzureRmKey: '${{ env.backendKey }}'
+                  workingDirectory: $(TF_WORKING_DIR)
+
+              # Step 3: Terraform Plan
+              - task: TerraformTaskV3@3
+                displayName: 'Terraform Plan'
+                inputs:
+                  provider: 'azurerm'
+                  command: 'plan'
+                  environmentServiceNameAzureRM: '${{ env.serviceConnection }}'
+                  workingDirectory: $(TF_WORKING_DIR)
+
+              # Step 4: Terraform Apply
+              - task: TerraformTaskV3@3
+                displayName: 'Terraform Apply'
+                inputs:
+                  provider: 'azurerm'
+                  command: 'apply'
+                  environmentServiceNameAzureRM: '${{ env.serviceConnection }}'
+                  workingDirectory: $(TF_WORKING_DIR)
+                  additionalArguments: '-auto-approve'
 
