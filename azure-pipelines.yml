@@ -6,8 +6,8 @@
 trigger:
 - none
 
-pool: Azure Pipelines
-Image: ubuntu-latest
+pool: 
+ name: ActiveAgent
 
 variables:
   # Specify the Terraform version to use
