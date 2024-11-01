@@ -7,7 +7,7 @@ trigger:
 - none
 
 pool:
- name: Default
+ name: Azure Pipelines
 
 variables:
   # Specify the Terraform version to use
