@@ -34,21 +34,22 @@ stages:
             inputs:
               provider: 'azurerm'
               command: 'init'
-              backendServiceArm: 'Azure subscription 1(76589609-f356-45d6-9343-cacd37492e24)'
+              backendServiceArm: 'devserviceprncipal'
               backendAzureRmResourceGroupName: 'mrcloudrg'
               backendAzureRmStorageAccountName: 'mrcloudstg'
               backendAzureRmContainerName: 'mrcloudcontainer'
               backendAzureRmKey: 'terraform.tfstate'
+              
           - task: TerraformTaskV3@3
             inputs:
               provider: 'azurerm'
               command: 'plan'
-              environmentServiceNameAzureRM: 'Azure subscription 1(76589609-f356-45d6-9343-cacd37492e24)'
+              environmentServiceNameAzureRM: 'devserviceprncipal'
           - task: TerraformTaskV3@3
             inputs:
               provider: 'azurerm'
               command: 'apply'
-              environmentServiceNameAzureRM: 'Azure subscription 1(76589609-f356-45d6-9343-cacd37492e24)'
+              environmentServiceNameAzureRM: 'devserviceprncipal'
   - stage: 'Tst_Env'
     displayName: 'Deploy Infrastructure using Terraform into Tst Env'
     dependsOn: Dev_Env
