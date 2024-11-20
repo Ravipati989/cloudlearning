@@ -3,3 +3,14 @@ trigger:
 
 pool:
   name: vmssagent
+
+stages:
+  - stage: dev
+    jobs:
+      - job : deploy
+        steps:
+          - task: TerraformInstaller@0
+            inputs:
+              terraformVersion: '1.5.0' 
+          
+         
