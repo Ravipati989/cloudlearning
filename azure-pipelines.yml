@@ -5,11 +5,17 @@ pool:
   name: Default
 
 jobs:
-- job: InstallTerraform
+- job: DeployARMTemplate
   steps:
-  - script: |
-      echo "Installing Terraform..."
-     
-    displayName: 'Install Terraform'
-          
-         
+  - task: AzureResourceManagerTemplateDeployment@3
+    inputs:
+      deploymentScope: 'Resource Group'
+      azureResourceManagerConnection: 'Azure subscription 1(9ea2f3e5-d1fd-40ac-ba1d-4bfdc55b395d)'
+      subscriptionId: '9ea2f3e5-d1fd-40ac-ba1d-4bfdc55b395d'
+      action: 'Create Or Update Resource Group'
+      resourceGroupName: 'myrggrp333'
+      location: 'UK South'
+      templateLocation: 'Linked artifact'
+      csmFile: 'templates/sqlserver.json'
+      csmParametersFile: 'templates/sqlserver.parameters.json'
+      deploymentMode: 'Incremental'
