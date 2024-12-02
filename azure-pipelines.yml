@@ -2,7 +2,7 @@ trigger:
   - none  # Set to manual trigger
 
 pool:
-  name: vmssagent
+  name: Default
 
 stages:
   - stage: dev
