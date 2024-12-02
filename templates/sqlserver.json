@@ -26,8 +26,8 @@
       "metadata": {
         "description": "The administrator password for the SQL server."
       }
-    },
-    
+    }
+  },
   "resources": [
     {
       "type": "Microsoft.Sql/servers",
