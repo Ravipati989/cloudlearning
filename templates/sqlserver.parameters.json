@@ -1,33 +1,32 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-      "sqlServerName": {
-        "value": "myserver999"
-      },
-      "location": {
-        "value": "UKSouth"
-      },
-      "administratorLogin": {
-        "value": "ravipati989"
-      },
-      "administratorPassword": {
-        "value": "Ravipati@989"  // Ensure secure management of passwords
-      },
-      "sqlFirewallRules": {
-        "value": [
-          {
-            "name": "AllowAllAzureServices",
-            "startIpAddress": "0.0.0.0",
-            "endIpAddress": "0.0.0.0"
-          },
-          {
-            "name": "AllowMyIP",
-            "startIpAddress": "203.0.113.10",
-            "endIpAddress": "203.0.113.10"
-          }
-        ]
-      }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "sqlServerName": {
+      "value": "my-sql-server999"
+    },
+    "location": {
+      "value": "UKSouth"
+    },
+    "administratorLogin": {
+      "value": "ravipati989"
+    },
+    "administratorPassword": {
+      "value": "Ravipati@989"  // Use Azure Key Vault or secure pipeline variables for production
+    },
+    "sqlFirewallRules": {
+      "value": [
+        {
+          "name": "AllowAllAzureServices",
+          "startIpAddress": "0.0.0.0",
+          "endIpAddress": "0.0.0.0"
+        },
+        {
+          "name": "AllowMyIP",
+          "startIpAddress": "203.0.113.10",
+          "endIpAddress": "203.0.113.10"
+        }
+      ]
     }
   }
-  
+}
