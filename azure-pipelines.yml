@@ -4,13 +4,19 @@ trigger:
 pool:
   name: Default
 
-stages:
-  - stage: dev
-    jobs:
-      - job : deploy
-        steps:
-          - task: TerraformInstaller@0
-            inputs:
-              terraformVersion: '1.5.0' 
+jobs:
+- job: InstallTerraform
+  steps:
+  - script: |
+      echo "Installing Terraform..."
+      # Download and install Terraform
+      sudo apt-get update -y
+      sudo apt-get install -y gnupg software-properties-common curl
+      curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+      sudo apt-add-repository "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+      sudo apt-get update -y
+      sudo apt-get install -y terraform
+      terraform --version  # Verify Terraform is installed
+    displayName: 'Install Terraform'
           
          
