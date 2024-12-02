@@ -27,20 +27,7 @@
         "description": "The administrator password for the SQL server."
       }
     },
-    "sqlFirewallRules": {
-      "type": "array",
-      "defaultValue": [
-        {
-          "name": "AllowAllAzureServices",
-          "startIpAddress": "0.0.0.0",
-          "endIpAddress": "0.0.0.0"
-        }
-      ],
-      "metadata": {
-        "description": "Array of firewall rules for the SQL server."
-      }
-    }
-  },
+    
   "resources": [
     {
       "type": "Microsoft.Sql/servers",
@@ -51,18 +38,6 @@
         "administratorLogin": "[parameters('administratorLogin')]",
         "administratorLoginPassword": "[parameters('administratorPassword')]",
         "version": "12.0"
-      }
-    },
-    {
-      "type": "Microsoft.Sql/servers/firewallRules",
-      "apiVersion": "2022-02-01-preview",
-      "name": "[concat(parameters('sqlServerName'), '-', uniqueString(resourceGroup().id))]",
-      "dependsOn": [
-        "[resourceId('Microsoft.Sql/servers', parameters('sqlServerName'))]"
-      ],
-      "properties": {
-        "startIpAddress": "[parameters('sqlFirewallRules')[0].startIpAddress]",
-        "endIpAddress": "[parameters('sqlFirewallRules')[0].endIpAddress]"
       }
     }
   ],
